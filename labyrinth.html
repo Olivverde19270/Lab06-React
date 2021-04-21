@@ -1,0 +1,242 @@
+<!-- Oliver Josue de Leon Milian 19270
+Sistemas y Tecnologias WEB
+Lab 06 - Laberinto REACT -->
+
+<html>
+    <head>
+        <!-- Import REACT & BABEL -->
+        <script src="https://unpkg.com/react@17/umd/react.production.min.js"></script>
+        <script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"></script>
+        <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    </head>
+    <body>
+        <!-- Call to the root, heading REACT -->
+        <div id="root"></div>
+        
+        <!-- Translate to BABEL -->
+        <script type="text/babel">
+
+            // Catch the root
+            const rooter = document.getElementById('root')
+
+            const Wall = () => {
+              const style = {
+                width: '100px',
+                height: '55px',
+                backgroundImage: 'url("./src/path.png")',
+                backgroundColor: '#4B9145'
+              }
+              return <div style={style} />
+            }
+
+
+            // Final Prize - Goal
+            const Diamond = () => {
+              const style = {
+                width: '100px',
+                height: '55px',
+                backgroundImage: 'url("./src/diamond.png")'
+              }
+              return <div style={style} />
+            }
+
+            const Player = ({Sprite}) => {
+              const style = {
+                width: '100px',
+                height: '55px',
+                backgroundImage: Sprite,
+                backgroundColor:  '#7f7f7f'
+              }
+              return <div style={style} />
+            }
+
+            const Path = () => {
+              const style = {
+                width: '100px',
+                height: '55px',
+                backgroundImage: 'url("./src/wall.jpg")'
+              }
+              return <div style={style} />
+            } 
+            
+            // Steps Counter
+            const counter = ({Steps}) => {
+              const center = {
+                textAlign: 'center'
+              }
+              return(
+                <div style={center}>
+                    <style>{"body { background-color: #1B5FF0; }"}</style>s
+                  <h1> Labyrinth COMPLETED!</h1>
+                  <h2> Steps: </h2>
+                  <h3> {Steps}</h3>
+                </div>
+              )
+            }
+
+            // Labyrinth development
+
+            const Labyrinth = () => {
+              const [LabyrinthData, setLabyrinthData] = React.useState([])
+
+              const rowStyles = {
+                display: 'grid',
+                gridAutoFlow: 'column'
+              }
+            
+              // Moves 
+              const [PlayerX, setPlayerX] = React.useState(1)
+              const [PlayerY, setPlayerY] = React.useState(1)
+
+              //Sprites
+              const [Sprite, setSprite] = React.useState('url(./src/Hero-Knight/Sprites/HeroKnight/Idle/HeroKnight_Idle_0.png)')
+
+              //Steps
+              const [Steps, setSteps] = React.useState(0)
+
+              //Screen
+              const [Screen, setScreen] = React.useState(1)
+
+              //Labyrinth Size
+              const [LabyrinthSize, setLabyrinthSize] = React.useState(10)
+
+              const handleKeyDown = (event) => {
+              //Right movement
+                if(event.key === 'd') {
+                  setSprite(() => {
+                    return 'url(./src/Hero-Knight/Sprites/HeroKnight/Run/HeroKnight_Run_8.png)'
+                  })
+                  if(LabyrinthData[PlayerY][PlayerX+1] === ' '){
+                    setPlayerX((oldValue) => {
+                      setSteps((oldValue) => {
+                        return oldValue +1
+                      })
+                      LabyrinthData[PlayerY][PlayerX] = ' '
+                      LabyrinthData[PlayerY][PlayerX+1] = 'p'
+                      return oldValue+1
+                    })
+                  }
+                  if(LabyrinthData[PlayerY][PlayerX+1] === 'g'){
+                    setScreen(() => {
+                      return 0
+                    })
+                  }
+                }
+
+                //Left movement
+                if(event.key === 'a') {
+                  setSprite(() => {
+                    return 'url(./src/Hero-Knight/Sprites/HeroKnight/Run/HeroKnight_inversed.png)'
+                  })
+                  if(LabyrinthData[PlayerY][PlayerX-1] === ' '){
+                    setPlayerX((oldValue) => {
+                      setSteps((oldValue) => {
+                        return oldValue +1
+                      })
+                      LabyrinthData[PlayerY][PlayerX] = ' '
+                      LabyrinthData[PlayerY][PlayerX-1] = 'p'
+                      return oldValue-1
+                    })
+                  }
+                  if(LabyrinthData[PlayerY][PlayerX-1] === 'g'){
+                    setScreen(() => {
+                      return 0
+                    })
+                  }
+                }
+                //Upside movement
+                if(event.key === 'w') {
+                  setSprite(() => {
+                    return 'url(./src/Hero-Knight/Sprites/HeroKnight/Fall/HeroKnight_Fall_1.png)'
+                  })
+                  if(LabyrinthData[PlayerY-1][PlayerX] === ' '){
+                    setPlayerY((oldValue) => {
+                      setSteps((oldValue) => {
+                        return oldValue +1
+                      })
+                      LabyrinthData[PlayerY][PlayerX] = ' '
+                      LabyrinthData[PlayerY-1][PlayerX] = 'p'
+                      return oldValue-1
+                    })
+                  }
+                  if(LabyrinthData[PlayerY-1][PlayerX] === 'g'){
+                    setScreen(() => {
+                      return 0
+                    })
+                  }
+                }
+                //Downside movement
+                if(event.key === 's') {
+                  setSprite(() => {
+                    return 'url(./src/Hero-Knight/Sprites/HeroKnight/Attack2/HeroKnight_Attack2_5.png)'
+                  })
+                  if(LabyrinthData[PlayerY+1][PlayerX] === ' '){
+                    setPlayerY((oldValue) => {
+                      setSteps((oldValue) => {
+                        return oldValue +1
+                      })
+                      LabyrinthData[PlayerY][PlayerX] = ' '
+                      LabyrinthData[PlayerY+1][PlayerX] = 'p'
+                      return oldValue+1
+                    })
+                  }
+                  if(LabyrinthData[PlayerY+1][PlayerX] === 'g'){
+                    setScreen(() => {
+                      return 0
+                    })
+                  }
+                }
+              }
+
+              
+              let LabyrinthFetch = 'http://ubeje.xyz:3001/?type=json&w=10&h=10'
+                React.useEffect(() => {
+                  fetch(LabyrinthFetch)
+                    .then(r => r.json())
+                    .then(r => setLabyrinthData(r))
+                }, [])
+
+                console.log('render', LabyrinthData)
+                if(Screen === 1){
+                  return (
+                    <div tabIndex="1" onKeyDown={handleKeyDown}>
+                      {LabyrinthData.map((row, rowIndex) => {
+                        return (
+                          <div style={rowStyles}>
+                            {row.map((cell, colIndex) => {
+                              switch(cell) {
+                                case 'p':
+                                  return <Player Sprite={Sprite} />
+                                case 'g':
+                                  return <Diamond />
+                                case ' ':
+                                  return <Path />
+                                default:
+                                  return <Wall />
+                              }
+                            })}
+                          </div>
+                        )
+                      })}
+                    </div>
+                  )
+                }
+                
+              
+              else{
+                return(
+                  <counter Steps={Steps} />
+                )
+              }
+            }
+
+
+
+            // REACT-DOM
+            ReactDOM.render(
+                  <Labyrinth />,
+                  rooter
+            ) 
+        </script>
+    </body>
+</html>
