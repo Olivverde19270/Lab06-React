@@ -33,9 +33,9 @@ Lab 06 - Laberinto REACT -->
             // Final Prize - Goal
             const Diamond = () => {
               const style = {
-                width: '100px',
+                width: '55px',
                 height: '55px',
-                backgroundImage: 'url("./src/diamond.png")'
+                backgroundImage: 'url("./src/diamond.jpg")'
               }
               return <div style={style} />
             }
@@ -60,16 +60,15 @@ Lab 06 - Laberinto REACT -->
             } 
             
             // Steps Counter
-            const counter = ({Steps}) => {
+            const Counter = ({Steps}) => {
               const center = {
                 textAlign: 'center'
               }
               return(
                 <div style={center}>
-                    <style>{"body { background-color: #1B5FF0; }"}</style>s
-                  <h1> Labyrinth COMPLETED!</h1>
-                  <h2> Steps: </h2>
-                  <h3> {Steps}</h3>
+                    <style>{"body { background-color: #1B5FF0; }"}</style>
+                  <h1> LABYRINTH COMPLETED!</h1>
+                  <h2> STEPS: {Steps}</h2>
                 </div>
               )
             }
@@ -225,7 +224,7 @@ Lab 06 - Laberinto REACT -->
               
               else{
                 return(
-                  <counter Steps={Steps} />
+                  <Counter Steps={Steps} />
                 )
               }
             }
