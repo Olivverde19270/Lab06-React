@@ -1,241 +1,179 @@
-<!-- Oliver Josue de Leon Milian 19270
-Sistemas y Tecnologias WEB
-Lab 06 - Laberinto REACT -->
-
 <html>
     <head>
-        <!-- Import REACT & BABEL -->
         <script src="https://unpkg.com/react@17/umd/react.production.min.js"></script>
         <script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"></script>
         <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     </head>
     <body>
-        <!-- Call to the root, heading REACT -->
-        <div id="root"></div>
-        
-        <!-- Translate to BABEL -->
+        <div id="root"></div>        
         <script type="text/babel">
-
-            // Catch the root
             const rooter = document.getElementById('root')
-
             const Wall = () => {
               const style = {
                 width: '100px',
                 height: '55px',
                 backgroundImage: 'url("./src/path.png")',
-                backgroundColor: '#4B9145'
+                backgroundColor: '#4B9145',
               }
               return <div style={style} />
             }
-
-
             // Final Prize - Goal
             const Diamond = () => {
               const style = {
                 width: '55px',
                 height: '55px',
-                backgroundImage: 'url("./src/diamond.jpg")'
+                backgroundImage: 'url("./src/diamond.jpg")',
               }
               return <div style={style} />
             }
-
-            const Player = ({Sprite}) => {
+            const Player = ({ Sprite }) => {
               const style = {
                 width: '100px',
                 height: '55px',
                 backgroundImage: Sprite,
-                backgroundColor:  '#7f7f7f'
+                backgroundColor: '#7f7f7f',
               }
               return <div style={style} />
             }
-
             const Path = () => {
               const style = {
                 width: '100px',
                 height: '55px',
-                backgroundImage: 'url("./src/wall.jpg")'
+                backgroundImage: 'url("./src/wall.jpg")',
               }
               return <div style={style} />
-            } 
-            
+            }
             // Steps Counter
-            const Counter = ({Steps}) => {
+            const Counter = ({ Steps }) => {
               const center = {
-                textAlign: 'center'
+                textAlign: 'center',
               }
-              return(
+              return (
                 <div style={center}>
-                    <style>{"body { background-color: #1B5FF0; }"}</style>
+                  <style>{'body { background-color: #1B5FF0; }'}</style>
                   <h1> LABYRINTH COMPLETED!</h1>
-                  <h2> STEPS: {Steps}</h2>
+                  <h2> STEPS: </h2>
+                  <h2>{ Steps }</h2>
                 </div>
               )
             }
-
             // Labyrinth development
-
             const Labyrinth = () => {
               const [LabyrinthData, setLabyrinthData] = React.useState([])
-
               const rowStyles = {
                 display: 'grid',
-                gridAutoFlow: 'column'
+                gridAutoFlow: 'column',
               }
-            
-              // Moves 
+              // Moves
               const [PlayerX, setPlayerX] = React.useState(1)
               const [PlayerY, setPlayerY] = React.useState(1)
-
-              //Sprites
+              // Sprites
               const [Sprite, setSprite] = React.useState('url(./src/Hero-Knight/Sprites/HeroKnight/Idle/HeroKnight_Idle_0.png)')
-
-              //Steps
+              // Steps
               const [Steps, setSteps] = React.useState(0)
-
-              //Screen
+              // Screen
               const [Screen, setScreen] = React.useState(1)
-
-              //Labyrinth Size
-              const [LabyrinthSize, setLabyrinthSize] = React.useState(10)
-
+              // Labyrinth Size
               const handleKeyDown = (event) => {
-              //Right movement
-                if(event.key === 'd') {
-                  setSprite(() => {
-                    return 'url(./src/Hero-Knight/Sprites/HeroKnight/Run/HeroKnight_Run_8.png)'
-                  })
-                  if(LabyrinthData[PlayerY][PlayerX+1] === ' '){
+              // Right movement
+                if (event.key === 'd') {
+                  setSprite(() => 'url(./src/Hero-Knight/Sprites/HeroKnight/Run/HeroKnight_Run_8.png)')
+                  if (LabyrinthData[PlayerY][PlayerX + 1] === ' ') {
                     setPlayerX((oldValue) => {
-                      setSteps((oldValue) => {
-                        return oldValue +1
-                      })
+                      setSteps((oldValue) => oldValue + 1)
                       LabyrinthData[PlayerY][PlayerX] = ' '
-                      LabyrinthData[PlayerY][PlayerX+1] = 'p'
-                      return oldValue+1
+                      LabyrinthData[PlayerY][PlayerX + 1] = 'p'
+                      return oldValue + 1
                     })
                   }
-                  if(LabyrinthData[PlayerY][PlayerX+1] === 'g'){
-                    setScreen(() => {
-                      return 0
-                    })
+                  if (LabyrinthData[PlayerY][PlayerX + 1] === 'g') {
+                    setScreen(() => 0)
                   }
                 }
-
-                //Left movement
-                if(event.key === 'a') {
-                  setSprite(() => {
-                    return 'url(./src/Hero-Knight/Sprites/HeroKnight/Run/HeroKnight_inversed.png)'
-                  })
-                  if(LabyrinthData[PlayerY][PlayerX-1] === ' '){
+                // Left movement
+                if (event.key === 'a') {
+                  setSprite(() => 'url(./src/Hero-Knight/Sprites/HeroKnight/Run/HeroKnight_inversed.png)')
+                  if (LabyrinthData[PlayerY][PlayerX - 1] === ' ') {
                     setPlayerX((oldValue) => {
-                      setSteps((oldValue) => {
-                        return oldValue +1
-                      })
+                      setSteps((oldValue) => oldValue + 1)
                       LabyrinthData[PlayerY][PlayerX] = ' '
-                      LabyrinthData[PlayerY][PlayerX-1] = 'p'
-                      return oldValue-1
+                      LabyrinthData[PlayerY][PlayerX - 1] = 'p'
+                      return oldValue - 1
                     })
                   }
-                  if(LabyrinthData[PlayerY][PlayerX-1] === 'g'){
-                    setScreen(() => {
-                      return 0
-                    })
+                  if (LabyrinthData[PlayerY][PlayerX - 1] === 'g') {
+                    setScreen(() => 0)
                   }
                 }
-                //Upside movement
-                if(event.key === 'w') {
-                  setSprite(() => {
-                    return 'url(./src/Hero-Knight/Sprites/HeroKnight/Fall/HeroKnight_Fall_1.png)'
-                  })
-                  if(LabyrinthData[PlayerY-1][PlayerX] === ' '){
+                // Upside movement
+                if (event.key === 'w') {
+                  setSprite(() => 'url(./src/Hero-Knight/Sprites/HeroKnight/Fall/HeroKnight_Fall_1.png)')
+                  if (LabyrinthData[PlayerY - 1][PlayerX] === ' ') {
                     setPlayerY((oldValue) => {
-                      setSteps((oldValue) => {
-                        return oldValue +1
-                      })
+                      setSteps((oldValue) => oldValue + 1)
                       LabyrinthData[PlayerY][PlayerX] = ' '
-                      LabyrinthData[PlayerY-1][PlayerX] = 'p'
-                      return oldValue-1
+                      LabyrinthData[PlayerY - 1][PlayerX] = 'p'
+                      return oldValue - 1
                     })
                   }
-                  if(LabyrinthData[PlayerY-1][PlayerX] === 'g'){
-                    setScreen(() => {
-                      return 0
-                    })
+                  if (LabyrinthData[PlayerY - 1][PlayerX] === 'g') {
+                    setScreen(() => 0)
                   }
                 }
-                //Downside movement
-                if(event.key === 's') {
-                  setSprite(() => {
-                    return 'url(./src/Hero-Knight/Sprites/HeroKnight/Attack2/HeroKnight_Attack2_5.png)'
-                  })
-                  if(LabyrinthData[PlayerY+1][PlayerX] === ' '){
+                // Downside movement
+                if (event.key === 's') {
+                  setSprite(() => 'url(./src/Hero-Knight/Sprites/HeroKnight/Attack2/HeroKnight_Attack2_5.png)')
+                  if (LabyrinthData[PlayerY + 1][PlayerX] === ' ') {
                     setPlayerY((oldValue) => {
-                      setSteps((oldValue) => {
-                        return oldValue +1
-                      })
+                      setSteps((oldValue) => oldValue + 1)
                       LabyrinthData[PlayerY][PlayerX] = ' '
-                      LabyrinthData[PlayerY+1][PlayerX] = 'p'
-                      return oldValue+1
+                      LabyrinthData[PlayerY + 1][PlayerX] = 'p'
+                      return oldValue + 1
                     })
                   }
-                  if(LabyrinthData[PlayerY+1][PlayerX] === 'g'){
-                    setScreen(() => {
-                      return 0
-                    })
+                  if (LabyrinthData[PlayerY + 1][PlayerX] === 'g') {
+                    setScreen(() => 0)
                   }
                 }
               }
-
-              
-              let LabyrinthFetch = 'http://ubeje.xyz:3001/?type=json&w=10&h=10'
-                React.useEffect(() => {
-                  fetch(LabyrinthFetch)
-                    .then(r => r.json())
-                    .then(r => setLabyrinthData(r))
-                }, [])
-
-                console.log('render', LabyrinthData)
-                if(Screen === 1){
-                  return (
-                    <div tabIndex="1" onKeyDown={handleKeyDown}>
-                      {LabyrinthData.map((row, rowIndex) => {
-                        return (
-                          <div style={rowStyles}>
-                            {row.map((cell, colIndex) => {
-                              switch(cell) {
-                                case 'p':
-                                  return <Player Sprite={Sprite} />
-                                case 'g':
-                                  return <Diamond />
-                                case ' ':
-                                  return <Path />
-                                default:
-                                  return <Wall />
-                              }
-                            })}
-                          </div>
-                        )
-                      })}
-                    </div>
-                  )
-                }
-                
-              
-              else{
-                return(
-                  <Counter Steps={Steps} />
+              const LabyrinthFetch = 'http://ubeje.xyz:3001/?type=json&w=10&h=10'
+              React.useEffect(() => {
+                fetch(LabyrinthFetch)
+                  .then((r) => r.json())
+                  .then((r) => setLabyrinthData(r))
+              }, [])
+              console.log('render', LabyrinthData)
+              if (Screen === 1) {
+                return (
+                  <div role="button" onKeyDown={handleKeyDown}>
+                    {LabyrinthData.map((row) =>
+                      <div style={rowStyles}>
+                        {row.map((cell) => {
+                          switch (cell) {
+                            case 'p':
+                              return <Player Sprite={Sprite} />
+                            case 'g':
+                              return <Diamond />
+                            case ' ':
+                              return <Path />
+                            default:
+                              return <Wall />
+                          }
+                        })}
+                      </div>,
+                    )}
+                  </div>
                 )
               }
+              return (
+                <Counter Steps={Steps} />
+              )
             }
-
-
-
             // REACT-DOM
             ReactDOM.render(
-                  <Labyrinth />,
-                  rooter
-            ) 
+              <Labyrinth />,
+              rooter,
+            )
         </script>
     </body>
 </html>
